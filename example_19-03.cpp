@@ -1,7 +1,7 @@
 // Example 19-3. Stereo calibration, rectification, and correspondence
 
 #include "stdafx.h"
-#include "..\..\_opencv.h"
+#include <opencv.hpp>
 
 #pragma warning(disable : 4996)
 #include <iostream>
@@ -300,8 +300,8 @@ static void StereoCalib(const char *imageList, int nx, int ny,bool useUncalibrat
 int main(int argc, char **argv) {
 	help(argv);
 	int board_w = 9, board_h = 6;
-	const char *board_list =  "../stereoData/example_19-03_list.txt";
-	const char* roopath = "";
+	const char *board_list =  "D:/Files/Opencv/StereoCalib/StereoCalib/StereoCalib/stereoData/example_19-03_list.txt";
+	const char* roopath = "D:/Files/Opencv/StereoCalib/StereoCalib/StereoCalib/stereoData/";
 	if (argc == 5) {
 		board_list = argv[1];
 		board_w = atoi(argv[2]);
@@ -310,8 +310,8 @@ int main(int argc, char **argv) {
 	}
 	else
 	{
-		return 0;
+		StereoCalib(board_list, board_w, board_h, true, roopath);
 	}
-	StereoCalib(board_list, board_w, board_h, true, roopath);
+	
 	return 0;
 }
