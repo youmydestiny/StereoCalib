@@ -300,8 +300,48 @@ static void StereoCalib(const char *imageList, int nx, int ny,bool useUncalibrat
 int main(int argc, char **argv) {
 	help(argv);
 	int board_w = 9, board_h = 6;
-	const char *board_list =  "D:/Files/Opencv/StereoCalib/StereoCalib/StereoCalib/stereoData/example_19-03_list.txt";
-	const char* roopath = "D:/Files/Opencv/StereoCalib/StereoCalib/StereoCalib/stereoData/";
+	const char* dir_name = nullptr;
+	const char* board_list = nullptr;
+	const char* roopath = nullptr;
+	int computer_env = 0;//0是实验室主机，1是自己的电脑
+	int validate = 0;//0是例程，1是自己的图像
+	if (validate==0)
+	{ 
+		if (computer_env == 0)
+		{
+			//实验室主机
+			dir_name = "F:\\CodeFiles\\VS\\opencv\\StereoCalib\\StereoCalib\\";
+		}
+		else
+		{
+			//自己的电脑
+			dir_name ="D:/Files/Opencv/StereoCalib/StereoCalib/StereoCalib/";
+		}
+		board_list = "stereoData/example_19-03_list.txt";
+		roopath = "stereoData/";
+	}
+	else
+	{//这个部分没有验证过
+		if (computer_env == 0)
+		{
+			//实验室主机
+			dir_name = "F:\\CodeFiles\\VS\\opencv\\StereoCalib\\StereoCalib\\";
+		}
+		else
+		{
+			//自己的电脑
+			dir_name = "D:/Files/Opencv/StereoCalib/StereoCalib/StereoCalib/";
+		}
+		board_list = "stereoData/example_19-03_list.txt";
+		roopath = "stereoData/";
+	}
+	string dir_name_str = dir_name;
+	
+	string board_list_str = board_list;
+	string board_list_path =dir_name_str+board_list_str;
+	
+	string roopath_str = roopath;
+	string roopath_complete = dir_name_str + roopath_str;
 	if (argc == 5) {
 		board_list = argv[1];
 		board_w = atoi(argv[2]);
@@ -310,7 +350,7 @@ int main(int argc, char **argv) {
 	}
 	else
 	{
-		StereoCalib(board_list, board_w, board_h, true, roopath);
+		StereoCalib(board_list_str.c_str(), board_w, board_h, true, roopath_complete.c_str());
 	}
 	
 	return 0;
