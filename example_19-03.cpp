@@ -12,7 +12,7 @@
 #include <iterator>
 
 using namespace std;
-
+int validate = 1;//0是例程，1是自己使用摄像头采集的图像
 void help(char *argv[]) {
 	cout
 		<< "\n\nExample 19-3. Stereo calibration, rectification, and "
@@ -47,8 +47,11 @@ static void StereoCalib(const char *imageList, int nx, int ny,bool useUncalibrat
 	bool showUndistorted = true;
 	bool isVerticalStereo = false; // horiz or vert cams
 	const int maxScale = 1;
-	const float squareSize = 1.f;
-	
+	float squareSize = 0;
+	if (validate == 0)
+		{squareSize = 1.f;}
+	else
+		{squareSize = 15.f;}
 	// actual square size
 	FILE *f = fopen(imageList, "rt");
 	int i, j, lr;
@@ -296,7 +299,6 @@ static void StereoCalib(const char *imageList, int nx, int ny,bool useUncalibrat
 // Press any key to step through results, ESC to exit
 //
 
-
 int main(int argc, char **argv) {
 	help(argv);
 	int board_w = 9, board_h = 6;
@@ -304,7 +306,7 @@ int main(int argc, char **argv) {
 	const char* board_list = nullptr;
 	const char* roopath = nullptr;
 	int computer_env = 0;//0是实验室主机，1是自己的电脑
-	int validate = 0;//0是例程，1是自己的图像
+	
 	if (validate==0)
 	{ 
 		if (computer_env == 0)
@@ -321,25 +323,27 @@ int main(int argc, char **argv) {
 		roopath = "stereoData/";
 	}
 	else
-	{//这个部分没有验证过
+	{
 		if (computer_env == 0)
 		{
 			//实验室主机
-			dir_name = "F:\\CodeFiles\\VS\\opencv\\StereoCalib\\StereoCalib\\";
+			dir_name = "F:\\CodeFiles\\VS\\opencv\\StereoCalib\\ReadCalibationPictures\\";
 		}
 		else
 		{
-			//自己的电脑
+			//自己的电脑，这个没有验证过
 			dir_name = "D:/Files/Opencv/StereoCalib/StereoCalib/StereoCalib/";
 		}
-		board_list = "stereoData/example_19-03_list.txt";
-		roopath = "stereoData/";
+		board_list = "CalibPicture/LIST.txt";
+		roopath = "CalibPicture/";
+		board_w = 11;
+		board_h = 8;
 	}
 	string dir_name_str = dir_name;
-	
+	//list文件所在的路径
 	string board_list_str = board_list;
 	string board_list_path =dir_name_str+board_list_str;
-	
+	//标定图片所在的路径
 	string roopath_str = roopath;
 	string roopath_complete = dir_name_str + roopath_str;
 	if (argc == 5) {
@@ -350,7 +354,7 @@ int main(int argc, char **argv) {
 	}
 	else
 	{
-		StereoCalib(board_list_str.c_str(), board_w, board_h, true, roopath_complete.c_str());
+		StereoCalib(board_list_path.c_str(), board_w, board_h, false, roopath_complete.c_str());
 	}
 	
 	return 0;
